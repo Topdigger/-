@@ -48,19 +48,20 @@ namespace WinFormsApp1
             {
                 textBox2.Text += Chips.GetValue(i);
             }
-
+            max = (int)Chips.GetValue(0);
             do
             {
 
                 k = sum / Chips.Length;
                 max = (int)Chips.GetValue(0);
-                for (int b = 0; b < (Chips.Length - 1); b++)
+                flag = 0;
+                for (int b = 0; b < (Chips.Length-1); b++)
                 {
                     maxi = (int)Chips.GetValue(b + 1);
-                    if (maxi > max)
+                    if (maxi >= max)
                     {
                         max = (int)Chips.GetValue((b + 1));
-                        flag = b + 1;
+                        flag = b+1;
 
                     }
                     else
@@ -87,7 +88,7 @@ namespace WinFormsApp1
                 {
                     bol = bol;
                 }
-                if ((int)Chips.GetValue(men) < (int)Chips.GetValue(bol))
+                if ((int)Chips.GetValue(men) < (int)Chips.GetValue(bol) && (int)Chips.GetValue(men) != k)
                 {
                     int norm = (int)Chips.GetValue(flag);
                     while (norm > k)
@@ -106,8 +107,8 @@ namespace WinFormsApp1
                 }
                 else
                 {
-                    if ((int)Chips.GetValue(men) > (int)Chips.GetValue(bol))
-                    {
+                    //if ((int)Chips.GetValue(men) > (int)Chips.GetValue(bol))
+                    //{
                         int norm = (int)Chips.GetValue(flag);
                         while (norm > k)
                         {
@@ -121,7 +122,7 @@ namespace WinFormsApp1
                             norm--;
                             flagres++;
                         }
-                    }
+                    //}
                 }
                 all = Chips.All(x => x == k);
             }
