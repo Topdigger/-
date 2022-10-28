@@ -8,136 +8,193 @@ namespace WinFormsApp1
 {
     public partial class Form1 : Form
     {
-        public string[] Chips;
-        public string ch;
-        public string mas;
-        public int sum;
-        public int k;
-        public int prom;
-        public string k1;
-        public bool prover;
+        public string[] Chips;//массив фишек
+        public int sum;//сумма элементов массива
+        public int k;//количество фишек, которое должно быть на каждом месте
+        public int bol;
         public int max;
-        public int maxi;
-        public int len;
-        public int flag;
-        public int flagres;
-        public bool all;
+        public int men;
+        public int flag;//выбранный элемент массива
+        public int flagres;//переменная для хранения количества шагов
+        public bool all;//принимает true, если все элементы массива равны
+        public int se;
+        public int rast;//хранит расстояние для суммирования элементов справа и слева от текущего элемента 
+        public int len;//хранит длину массива
         public Form1()
-            {
-                InitializeComponent();
-            }
+        {
+            InitializeComponent();
+        }
         public void button1_Click(object sender, EventArgs e)
         {
             textBox1.Text = "";
             textBox2.Text = "";
-            int a = new int();
+            int a;
             a = ((int)numericUpDown1.Value);
             int[] Chips = new int[a];
             len = Chips.Length;
             flagres = 0;
             all = false;
-            for (int i = 0; i < len; i++)
-            {
-                string table = Microsoft.VisualBasic.Interaction.InputBox("Введите количество фишек на " + (i + 1) + " столе:");
-                int table1 = Int32.Parse(table);
-                Chips.SetValue(table1, i);
-                int fis = int.Parse(table);
-                sum = sum + fis;
-            }
-            for (int i = 0; i < Chips.Length; i++)
-            {
-                textBox2.Text += Chips.GetValue(i);
-            }
-            max = (int)Chips.GetValue(0);
-            do
-            {
-
-                k = sum / Chips.Length;
-                max = (int)Chips.GetValue(0);
-                flag = 0;
-                for (int b = 0; b < (Chips.Length-1); b++)
-                {
-                    maxi = (int)Chips.GetValue(b + 1);
-                    if (maxi >= max)
-                    {
-                        max = (int)Chips.GetValue((b + 1));
-                        flag = b+1;
-
+            string table = textBox3.Text;
+            Chips = table.Split(",").Select(int.Parse).ToArray();
+                for (int i = 0; i < Chips.Length; i++)
+                    {  
+                        sum += Chips[i];
                     }
+                for (int i = 0; i < Chips.Length; i++)
+                    {
+                        textBox2.Text += Chips.GetValue(i) + " ";
+                    }
+            max = Chips[0];
+            k = sum / Chips.Length;
+                if (a % 2 == 1)
+                    {
+                        rast = (a - 1)/2;
+                    }
+                else 
+                    {
+                        rast = (a - 2)/2;   
+                    }
+            do
+               {
+                flag = -1;
+                se = 0;
+                int summen = 0;//сумма элементов слева
+                int sumbol = 0;//сумма элементов справа
+
+                do//выбор первого значения >k из массива 
+                    {
+                        int per = Chips[se];
+                        if (per > k)
+                            {
+                                flag = se;
+                                break;
+                            }
+                        else
+                            {
+                                se++;
+                            }
+                    }
+                    while (flag < 0); 
+                        for (int i = 1; i <= rast; i++)
+                            {
+                                if (flag - i < 0)
+                                    {
+                                        summen += Chips[a - i];
+                                    }
+                                else
+                                    {
+                                        summen += Chips[flag - i];
+                                    }
+                            }
+                        for (int i = 1; i <= rast; i++)
+                            {
+                                if (flag + i > (a-1))
+                                    {
+                                        sumbol += Chips[-1+((flag+i)-(a-1))];
+                                    }
+                                else
+                                    {
+                                        sumbol += Chips[flag + i];
+                                    }
+                            }
+                    if (sumbol == summen)
+                    {
+                        if (flag + 1 < a & flag - 1 >= 0)
+                        {
+                            if (Chips[flag - 1] > Chips[flag + 1])
+                                {
+                                    Chips[flag]--;
+                                    Chips[flag + 1]++;
+                                    flagres++;
+                                }
+                            else
+                                {
+                                    Chips[flag]--;
+                                    Chips[flag - 1]++;
+                                    flagres++;
+                                }
+                        }
+                        else
+                            {
+                                if (flag - 1 < 0)
+                                    {
+                                        men = a - 1;
+                                    }
+                                else
+                                    {
+                                        men = flag - 1;
+                                    }
+                                if (flag + 1 >= a)
+                                    {
+                                        bol = 0;
+                                    }
+                                else
+                                    {
+                                        bol = flag + 1;
+                                    }
+                                if (Chips[men] < Chips[bol])
+                                    {
+                                        Chips[flag]--;
+                                        Chips[men]++;
+                                        flagres++;
+                                    }
+                                else 
+                                    {
+                                        Chips[flag]--;
+                                        Chips[bol]++;
+                                        flagres++;
+                                    }
+                        }
+                    }
+                
+                    if (sumbol > summen)
+                        {
+                            if (flag - 1 >= 0)
+                                {
+                                    Chips[flag]--;
+                                    Chips[flag - 1]++;
+                                    flagres++;
+                                }
+                            else
+                                {
+                                    Chips[flag]--;
+                                    Chips[a - 1]++;
+                                    flagres++;
+                                }
+                        }
                     else
                     {
-                        max = max;
+                        if (flag + 1 <= a - 1)
+                            {
+                                Chips[flag]--;
+                                Chips[flag + 1]++;
+                                flagres++;
+                            }
+                        else
+                            {
+                                Chips[flag]--;
+                                Chips[0]++;
+                                flagres++;
+                            }
                     }
+ 
+                 all = Chips.All(x => x == k);
+                 se = 0;
+                 flag = -1;
+                
+                 }
+                 while (all != true);
 
-                }
-                int men = flag - 1;
-                if (men < 0)
-                {
-                    men = a - 1;
-                }
-                else
-                {
-                    men = men;
-                }
-                int bol = flag + 1;
-                if (bol >= a)
-                {
-                    bol = 0;
-                }
-                else
-                {
-                    bol = bol;
-                }
-                if ((int)Chips.GetValue(men) < (int)Chips.GetValue(bol) && (int)Chips.GetValue(men) != k)
-                {
-                    int norm = (int)Chips.GetValue(flag);
-                    while (norm > k)
+                for (int i = 0; i < Chips.Length; i++)//вывод получившегося массива
                     {
-                        int per = (int)Chips.GetValue(flag);
-                        per--;
-                        int per2 = (int)Chips.GetValue(men);
-                        per2++;
-
-                        Chips.SetValue(per2, men);
-                        Chips.SetValue(per, flag);
-                        norm--;
-                        flagres++;
+                        textBox1.Text += Chips.GetValue(i) + " ";
                     }
 
-                }
-                else
-                {
-                    //if ((int)Chips.GetValue(men) > (int)Chips.GetValue(bol))
-                    //{
-                        int norm = (int)Chips.GetValue(flag);
-                        while (norm > k)
-                        {
-                            int per = (int)Chips.GetValue(flag);
-                            per--;
-                            int per2 = (int)Chips.GetValue(bol);
-                            per2++;
-
-                            Chips.SetValue(per2, bol);
-                            Chips.SetValue(per, flag);
-                            norm--;
-                            flagres++;
-                        }
-                    //}
-                }
-                all = Chips.All(x => x == k);
-            }
-            while (all != true);
-
-            for (int i = 0; i < Chips.Length; i++)
-                {
-                    textBox1.Text += Chips.GetValue(i);
-                }
-
-            flag++;
-            textBox4.Text = flagres.ToString();
+               
+                textBox4.Text = flagres.ToString();//вывод количества шагов
+            
         }
-        }
-
 
     }
+}
 
