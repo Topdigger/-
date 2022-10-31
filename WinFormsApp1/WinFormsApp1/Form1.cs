@@ -34,6 +34,7 @@ namespace WinFormsApp1
             len = Chips.Length;
             flagres = 0;
             all = false;
+            sum = 0;
             string table = textBox3.Text;
             Chips = table.Split(",").Select(int.Parse).ToArray();
                 for (int i = 0; i < Chips.Length; i++)
@@ -97,87 +98,89 @@ namespace WinFormsApp1
                                         sumbol += Chips[flag + i];
                                     }
                             }
-                    if (sumbol == summen)
+                if (sumbol == summen)
+                {
+                    if (flag + 1 < a & flag - 1 >= 0)
                     {
-                        if (flag + 1 < a & flag - 1 >= 0)
+                        if (Chips[flag - 1] > Chips[flag + 1])
                         {
-                            if (Chips[flag - 1] > Chips[flag + 1])
-                                {
-                                    Chips[flag]--;
-                                    Chips[flag + 1]++;
-                                    flagres++;
-                                }
-                            else
-                                {
-                                    Chips[flag]--;
-                                    Chips[flag - 1]++;
-                                    flagres++;
-                                }
+                            Chips[flag]--;
+                            Chips[flag + 1]++;
+                            flagres++;
                         }
                         else
-                            {
-                                if (flag - 1 < 0)
-                                    {
-                                        men = a - 1;
-                                    }
-                                else
-                                    {
-                                        men = flag - 1;
-                                    }
-                                if (flag + 1 >= a)
-                                    {
-                                        bol = 0;
-                                    }
-                                else
-                                    {
-                                        bol = flag + 1;
-                                    }
-                                if (Chips[men] < Chips[bol])
-                                    {
-                                        Chips[flag]--;
-                                        Chips[men]++;
-                                        flagres++;
-                                    }
-                                else 
-                                    {
-                                        Chips[flag]--;
-                                        Chips[bol]++;
-                                        flagres++;
-                                    }
+                        {
+                            Chips[flag]--;
+                            Chips[flag - 1]++;
+                            flagres++;
                         }
                     }
-                
-                    if (sumbol > summen)
+                    else
+                    {
+                        if (flag - 1 < 0)
                         {
-                            if (flag - 1 >= 0)
-                                {
-                                    Chips[flag]--;
-                                    Chips[flag - 1]++;
-                                    flagres++;
-                                }
-                            else
-                                {
-                                    Chips[flag]--;
-                                    Chips[a - 1]++;
-                                    flagres++;
-                                }
+                            men = a - 1;
                         }
+                        else
+                        {
+                            men = flag - 1;
+                        }
+                        if (flag + 1 >= a)
+                        {
+                            bol = 0;
+                        }
+                        else
+                        {
+                            bol = flag + 1;
+                        }
+                        if (Chips[men] < Chips[bol])
+                        {
+                            Chips[flag]--;
+                            Chips[men]++;
+                            flagres++;
+                        }
+                        else
+                        {
+                            Chips[flag]--;
+                            Chips[bol]++;
+                            flagres++;
+                        }
+                    }
+                }
+                else
+                {
+
+                    if (sumbol > summen)
+                    {
+                        if (flag - 1 >= 0)
+                        {
+                            Chips[flag]--;
+                            Chips[flag - 1]++;
+                            flagres++;
+                        }
+                        else
+                        {
+                            Chips[flag]--;
+                            Chips[a - 1]++;
+                            flagres++;
+                        }
+                    }
                     else
                     {
                         if (flag + 1 <= a - 1)
-                            {
-                                Chips[flag]--;
-                                Chips[flag + 1]++;
-                                flagres++;
-                            }
+                        {
+                            Chips[flag]--;
+                            Chips[flag + 1]++;
+                            flagres++;
+                        }
                         else
-                            {
-                                Chips[flag]--;
-                                Chips[0]++;
-                                flagres++;
-                            }
+                        {
+                            Chips[flag]--;
+                            Chips[0]++;
+                            flagres++;
+                        }
                     }
- 
+                }
                  all = Chips.All(x => x == k);
                  se = 0;
                  flag = -1;
