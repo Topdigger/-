@@ -80,7 +80,7 @@ namespace WinFormsApp1
                             {
                                 if (flag - i < 0)
                                     {
-                                        summen += Chips[a - i];
+                                        summen += Chips[a - i +1];
                                     }
                                 else
                                     {
