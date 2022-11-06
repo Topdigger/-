@@ -30,384 +30,390 @@ namespace WinFormsApp1
         public void button1_Click(object sender, EventArgs e)
         {
             textBox1.Text = "";
-            textBox2.Text = "";
+            textBox2.Text = "";//обнуление текстбоксов для новых значений
             int a;
-            a = ((int)numericUpDown1.Value);
-            int[] Chips = new int[a];
-            len = Chips.Length;
-            flagres = 0;
-            all = false;
-            sum = 0;
-            string table = textBox3.Text;
+            a = (int)numericUpDown1.Value;//переменная хранит в себе количество столов
+            int[] Chips = new int[a];//массив столов
+            len = Chips.Length;//длинна массива
+            flagres = 0;//переменная хранит количество перемещений
+            all = false;//переменная-условие для основного цикла 
+            sum = 0;//сумма элементов массива
+            string table = textBox3.Text;//текстбокс для ввода фишек
             Chips = table.Split(",").Select(int.Parse).ToArray();
-            for (int i = 0; i < Chips.Length; i++)
-            {
-                sum += Chips[i];
-            }
-            for (int i = 0; i < Chips.Length; i++)
-            {
-                textBox2.Text += Chips.GetValue(i) + " ";
-            }
-            max = Chips[0];
-            k = sum / Chips.Length;
-            if (a % 2 == 1)
-            {
-                rast = (a - 1) / 2;
-            }
+            if (Chips.Length != a)
+                {
+                    MessageBox.Show("Количество введенных элементов не соответствует указанному количеству столов");
+                }
             else
-            {
-                rast = (a - 2) / 2;
-            }
-            do
-            {
-                flag = -1;
-                se = 0;
-                sc1 = 0;
-                sc2 = 0;
-                sch = -1;
-                decimal summen = 0;//сумма элементов слева
-                decimal sumbol = 0;//сумма элементов справа
-
-                do//выбор первого значения >k из массива 
                 {
-                    int per = Chips[se];
-                    if (per > k)
-                    {
-                        flag = se;
-                        break;
-                    }
-                    else
-                    {
-                        se++;
-                    }
-                }
-                while (flag < 0);
-
-                for (int i = 1; i <= rast; i++)
-                {
-                    if (flag - i < 0)
-                    {
-                        sc1++;
-                        summen += Chips[a - sc1];
-                    }
-                    else
-                    {
-                        summen += Chips[flag - i];
-                    }
-                }
-                for (int i = 1; i <= rast; i++)
-                {
-                    if (flag + i > (a - 1))
-                    {
-                        sc2++;
-                        sumbol += Chips[-1 + sc2];
-                    }
-                    else
-                    {
-                        sumbol += Chips[flag + i];
-                    }
-                }
-                //ЗДЕСЬ НАЧАЛО ПРОВЕРКИ НА СУММУ
-                if (sumbol / k == rast)
-                {
-                    if (flag - 1 >= 0)
-                    {
-                        Chips[flag]--;
-                        Chips[flag - 1]++;
-                        flagres++;
-                        if (Chips[flag - 1] == k + 1)
+                    for (int i = 0; i < Chips.Length; i++)
                         {
-                            flag--;
-                            while (Chips[flag] == k + 1)
-                            {
-                                if (flag - 1 < 0)
-                                {
-                                    sch++;
-                                    Chips[a - 1 - sch]++;
-                                    Chips[flag]--;
-                                    flag = a - 1;
-                                    flagres++;
-                                }
-                                else
-                                {
-                                    Chips[flag]--;
-                                    Chips[flag - 1]++;
-                                    flag--;
-                                    flagres++;
-                                }
-                            }
-
+                            sum += Chips[i];//подсчёт суммы элементов
                         }
-                    }
-                }
-                else
-                {
-                    if (summen / k == rast)
-                    {
-                        if (flag + 1 <= a - 1)
+                    for (int i = 0; i < Chips.Length; i++)
                         {
-                            Chips[flag]--;
-                            Chips[flag + 1]++;
-                            flagres++;
-                            if (Chips[flag + 1] == k + 1)
-                            {
-                                flag++;
-                                do
-                                {
-                                    if (flag + 1 >= a)
-                                    {
-                                        sch++;
-                                        Chips[sch]++;
-                                        Chips[flag]--;
-                                        flag = 0;
-                                        flagres++;
-                                    }
-                                    else
-                                    {
-                                        Chips[flag]--;
-                                        Chips[flag + 1]++;
-                                        flag++;
-                                        flagres++;
-                                    }
-                                }
-                                while (Chips[flag] == k + 1);
-                            }
+                            textBox2.Text += Chips.GetValue(i) + " ";//вывод начального массива
                         }
-                    }
+                    max = Chips[0];//начало поиска первого элемента массива,с которого начнутся перемещения
+                    k = sum / Chips.Length;//значение фишек, которое должно быть на каждом столе
+                    if (a % 2 == 1)
+                        {
+                            rast = (a - 1) / 2;//расстояние - количество столов для рассчета справа и слева от рассматриваемого элемента
+                        }
                     else
-                if (sumbol == summen)
-                    {
-                        if (flag + 1 < a & flag - 1 >= 0)
                         {
-                            if (Chips[flag - 1] > Chips[flag + 1])
-                            {
-                                Chips[flag]--;
-                                Chips[flag + 1]++;
-                                flagres++;
-                                if (Chips[flag + 1] == k + 1)
-                                {
-                                    flag--;
-                                    do
-                                    {
-                                        if (flag + 1 >= a)
-                                        {
-                                            sch++;
-                                            Chips[sch]++;
-                                            Chips[flag]--;
-                                            flag = 0;
-                                            flagres++;
-                                        }
-                                        else
-                                        {
-                                            Chips[flag]--;
-                                            Chips[flag + 1]++;
-                                            flag++;
-                                            flagres++;
-                                        }
-                                    }
-                                    while (Chips[flag] == k + 1);
-                                }
-                            }
-                            else
-                            {
-                                Chips[flag]--;
-                                Chips[flag - 1]++;
-                                flagres++;
-                                if (Chips[flag - 1] == k + 1)
-                                {
-                                    flag--;
-                                    do
-                                    {
-                                        if (flag - 1 < 0)
-                                        {
-                                            sch++;
-                                            Chips[a - 1 - sch]++;
-                                            Chips[flag]--;
-                                            flag = a - 1;
-                                            flagres++;
-                                        }
-                                        else
-                                        {
-                                            Chips[flag]--;
-                                            Chips[flag - 1]++;
-                                            flag--;
-                                            flagres++;
-                                        }
-                                    }
-                                    while (Chips[flag] == k + 1);
-                                }
-                            }
+                            rast = (a - 2) / 2;
                         }
-                        else
-                        {
-                            if (flag - 1 < 0)
-                            {
-                                men = a - 1;
-                            }
-                            else
-                            {
-                                men = flag - 1;
-                            }
-                            if (flag + 1 >= a)
-                            {
-                                bol = 0;
-                            }
-                            else
-                            {
-                                bol = flag + 1;
-                            }
-                            if (Chips[men] < Chips[bol])
-                            {
-                                Chips[flag]--;
-                                Chips[men]++;
-                                flagres++;
-                            }
-                            else
-                            {
-                                Chips[flag]--;
-                                Chips[bol]++;
-                                flagres++;
-                            }                     
-                        }
-                    }
-                    else
+                    do//начало основного цикла
                     {
+                        flag = -1;//переменная для хранения индекса текущего анализируемого элемента
+                        se = 0;
+                        sc1 = 0;
+                        sc2 = 0;
+                        sch = -1;
+                        decimal summen = 0;//сумма элементов слева
+                        decimal sumbol = 0;//сумма элементов справа
 
-                        if (sumbol > summen)
+                        do//выбор первого значения >k из массива 
+                        {
+                            int per = Chips[se];
+                            if (per > k)
+                                {
+                                    flag = se;
+                                    break;
+                                }
+                            else
+                                {
+                                    se++;
+                                }
+                        }
+                        while (flag < 0);
+
+                        for (int i = 1; i <= rast; i++)
+                        {
+                            if (flag - i < 0)
+                                {
+                                    sc1++;
+                                    summen += Chips[a - sc1];
+                                }
+                            else
+                                {
+                                    summen += Chips[flag - i];
+                                }
+                        }
+                        for (int i = 1; i <= rast; i++)
+                        {
+                            if (flag + i > (a - 1))
+                                {
+                                    sc2++;
+                                    sumbol += Chips[-1 + sc2];
+                                }
+                            else
+                                {
+                                    sumbol += Chips[flag + i];
+                                }
+                        }
+                        //ЗДЕСЬ НАЧАЛО ПРОВЕРКИ НА СУММУ
+                        if (sumbol / k == rast)//если все элементы справа уже равны k, то перекидываем налево
                         {
                             if (flag - 1 >= 0)
                             {
                                 Chips[flag]--;
                                 Chips[flag - 1]++;
                                 flagres++;
-                                if (Chips[flag - 1] == k + 1)
+                                if (Chips[flag - 1] == k + 1)//если фишку перекинули на стол, где уже было k фишек, то переносим её дальше
                                 {
                                     flag--;
                                     while (Chips[flag] == k + 1)
                                     {
                                         if (flag - 1 < 0)
-                                        {
-                                            sch++;
-                                            Chips[a - 1 - sch]++;
-                                            Chips[flag]--;
-                                            flag = a - 1;
-                                            flagres++;
-                                        }
+                                            {
+                                                sch++;
+                                                Chips[a - 1 - sch]++;
+                                                Chips[flag]--;
+                                                flag = a - 1;
+                                                flagres++;
+                                            }
                                         else
-                                        {
-                                            Chips[flag]--;
-                                            Chips[flag - 1]++;
-                                            flag--;
-                                            flagres++;
-                                        }
+                                            {
+                                                Chips[flag]--;
+                                                Chips[flag - 1]++;
+                                                flag--;
+                                                flagres++;
+                                            }
                                     }
 
-                                }
-
-                            }
-                            else
-                            {
-                                Chips[flag]--;
-                                Chips[a - 1]++;
-                                flagres++;
-                                if (Chips[a - 1] == k + 1)
-                                {
-                                    flag = a - 1;
-                                    while (Chips[flag] == k + 1)
-                                    {
-                                        if (flag - 1 < 0)
-                                        {
-                                            sch++;
-                                            Chips[a - 1 - sch]++;
-                                            Chips[flag]--;
-                                            flag = a - 1;
-                                            flagres++;
-                                        }
-                                        else
-                                        {
-                                            Chips[flag]--;
-                                            Chips[flag - 1]++;
-                                            flag--;
-                                            flagres++;
-                                        }
-
-                                    }
                                 }
                             }
                         }
                         else
                         {
-
-                            if (flag + 1 <= a - 1)
+                            if (summen / k == rast)//если все элементы слева уже равны k, то перекидываем направо
                             {
-                                Chips[flag]--;
-                                Chips[flag + 1]++;
-                                flagres++;
-                                if (Chips[flag + 1] == k + 1)
+                                if (flag + 1 <= a - 1)
                                 {
-                                    flag++;
-                                    do
+                                    Chips[flag]--;
+                                    Chips[flag + 1]++;
+                                    flagres++;
+                                    if (Chips[flag + 1] == k + 1)
                                     {
-                                        if (flag + 1 >= a)
+                                        flag++;
+                                        do
                                         {
-                                            sch++;
-                                            Chips[sch]++;
-                                            Chips[flag]--;
-                                            flag = 0;
-                                            flagres++;
+                                            if (flag + 1 >= a)
+                                                {
+                                                    sch++;
+                                                    Chips[sch]++;
+                                                    Chips[flag]--;
+                                                    flag = 0;
+                                                    flagres++;
+                                                }
+                                            else
+                                                {
+                                                    Chips[flag]--;
+                                                    Chips[flag + 1]++;
+                                                    flag++;
+                                                    flagres++;
+                                                }
                                         }
-                                        else
-                                        {
-                                            Chips[flag]--;
-                                            Chips[flag + 1]++;
-                                            flag++;
-                                            flagres++;
-                                        }
+                                        while (Chips[flag] == k + 1);
                                     }
-                                    while (Chips[flag] == k + 1);
                                 }
                             }
                             else
+                        if (sumbol == summen)// если сумма слева равна сумме справа, то выбираем направление движения по соседним элементам
                             {
-                                Chips[flag]--;
-                                Chips[0]++;
-                                flagres++;
-                                if (Chips[0] == k + 1)
+                                if (flag + 1 < a & flag - 1 >= 0)
                                 {
-                                    flag = 0;
-                                    do
+                                    if (Chips[flag - 1] > Chips[flag + 1])
                                     {
-                                        if (flag + 1 >= a)
+                                        Chips[flag]--;
+                                        Chips[flag + 1]++;
+                                        flagres++;
+                                        if (Chips[flag + 1] == k + 1)
                                         {
-                                            sch++;
-                                            Chips[sch]++;
-                                            Chips[flag]--;
-                                            flag = 0;
-                                            flagres++;
-                                        }
-                                        else
-                                        {
-                                            Chips[flag]--;
-                                            Chips[flag + 1]++;
-                                            flag++;
-                                            flagres++;
+                                            flag--;
+                                            do
+                                            {
+                                                if (flag + 1 >= a)
+                                                {
+                                                    sch++;
+                                                    Chips[sch]++;
+                                                    Chips[flag]--;
+                                                    flag = 0;
+                                                    flagres++;
+                                                }
+                                                else
+                                                {
+                                                    Chips[flag]--;
+                                                    Chips[flag + 1]++;
+                                                    flag++;
+                                                    flagres++;
+                                                }
+                                            }
+                                            while (Chips[flag] == k + 1);
                                         }
                                     }
-                                    while (Chips[flag] == k + 1);
+                                    else
+                                    {
+                                        Chips[flag]--;
+                                        Chips[flag - 1]++;
+                                        flagres++;
+                                        if (Chips[flag - 1] == k + 1)
+                                        {
+                                            flag--;
+                                            do
+                                                {
+                                                    if (flag - 1 < 0)
+                                                        {
+                                                            sch++;
+                                                            Chips[a - 1 - sch]++;
+                                                            Chips[flag]--;
+                                                            flag = a - 1;
+                                                            flagres++;
+                                                        }
+                                                    else
+                                                        {
+                                                            Chips[flag]--;
+                                                            Chips[flag - 1]++;
+                                                            flag--;
+                                                            flagres++;
+                                                        }
+                                                }
+                                            while (Chips[flag] == k + 1);
+                                        }
+                                    }
                                 }
+                                else
+                                    {
+                                        if (flag - 1 < 0)
+                                            {
+                                                men = a - 1;
+                                            }
+                                        else
+                                            {
+                                                men = flag - 1;
+                                            }
+                                        if (flag + 1 >= a)
+                                            {
+                                                bol = 0;
+                                            }
+                                        else
+                                            {
+                                                bol = flag + 1;
+                                            }
+                                        if (Chips[men] < Chips[bol])
+                                            {
+                                                Chips[flag]--;
+                                                Chips[men]++;
+                                                flagres++;
+                                            }
+                                        else
+                                            {
+                                                Chips[flag]--;
+                                                Chips[bol]++;
+                                                flagres++;
+                                            }
+                                    }
                             }
+                            else
+                            {
+
+                                if (sumbol > summen)// если сумма справа больше суммы слева, то идём влево
+                                    {
+                                        if (flag - 1 >= 0)
+                                            {
+                                                Chips[flag]--;
+                                                Chips[flag - 1]++;
+                                                flagres++;
+                                                if (Chips[flag - 1] == k + 1)
+                                                    {
+                                                        flag--;
+                                                        while (Chips[flag] == k + 1)
+                                                            {
+                                                                if (flag - 1 < 0)
+                                                                    {
+                                                                        sch++;
+                                                                        Chips[a - 1 - sch]++;
+                                                                        Chips[flag]--;
+                                                                        flag = a - 1;
+                                                                        flagres++;
+                                                                    }
+                                                                else
+                                                                    {
+                                                                        Chips[flag]--;
+                                                                        Chips[flag - 1]++;
+                                                                        flag--;
+                                                                        flagres++;
+                                                                    }
+                                                            }
+
+                                                    }
+
+                                            }
+                                        else
+                                            {
+                                                Chips[flag]--;
+                                                Chips[a - 1]++;
+                                                flagres++;
+                                                if (Chips[a - 1] == k + 1)
+                                                    {
+                                                        flag = a - 1;
+                                                        while (Chips[flag] == k + 1)
+                                                            {
+                                                                if (flag - 1 < 0)
+                                                                    {
+                                                                        sch++;
+                                                                        Chips[a - 1 - sch]++;
+                                                                        Chips[flag]--;
+                                                                        flag = a - 1;
+                                                                        flagres++;
+                                                                    }
+                                                                else
+                                                                    {
+                                                                        Chips[flag]--;
+                                                                        Chips[flag - 1]++;
+                                                                        flag--;
+                                                                        flagres++;
+                                                                    }
+
+                                                            }
+                                                    }
+                                            }
+                                    }
+                                else
+                                {
+
+                                    if (flag + 1 <= a - 1)
+                                    {
+                                        Chips[flag]--;
+                                        Chips[flag + 1]++;
+                                        flagres++;
+                                        if (Chips[flag + 1] == k + 1)
+                                        {
+                                            flag++;
+                                            do
+                                            {
+                                                if (flag + 1 >= a)
+                                                    {
+                                                        sch++;
+                                                        Chips[sch]++;
+                                                        Chips[flag]--;
+                                                        flag = 0;
+                                                        flagres++;
+                                                    }
+                                                else
+                                                    {
+                                                        Chips[flag]--;
+                                                        Chips[flag + 1]++;
+                                                        flag++;
+                                                        flagres++;
+                                                    }
+                                            }
+                                            while (Chips[flag] == k + 1);
+                                        }
+                                    }
+                                    else
+                                        {
+                                            Chips[flag]--;
+                                            Chips[0]++;
+                                            flagres++;
+                                            if (Chips[0] == k + 1)
+                                            {
+                                                flag = 0;
+                                                do
+                                                    {
+                                                        if (flag + 1 >= a)
+                                                            {
+                                                                sch++;
+                                                                Chips[sch]++;
+                                                                Chips[flag]--;
+                                                                flag = 0;
+                                                                flagres++;
+                                                            }
+                                                        else
+                                                            {
+                                                                Chips[flag]--;
+                                                                Chips[flag + 1]++;
+                                                                flag++;
+                                                                flagres++;
+                                                            }
+                                                    }
+                                                while (Chips[flag] == k + 1);
+                                            }
+                                        }
+                                }
+
+                            }
+
                         }
+                        all = Chips.All(x => x == k);
+                        se = 0;
+                        flag = -1;
 
                     }
 
-                }
-                    all = Chips.All(x => x == k);
-                    se = 0;
-                    flag = -1;
-
-                }
-            
-            while (all != true);
+                while (all != true);
 
                 for (int i = 0; i < Chips.Length; i++)//вывод получившегося массива
                 {
@@ -418,7 +424,8 @@ namespace WinFormsApp1
                 textBox4.Text = flagres.ToString();//вывод количества шагов
 
             }
-            
+
+        }    
 
     }
 }

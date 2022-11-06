@@ -38,15 +38,15 @@
             this.label2 = new System.Windows.Forms.Label();
             this.label3 = new System.Windows.Forms.Label();
             this.label4 = new System.Windows.Forms.Label();
-            this.textBox3 = new System.Windows.Forms.TextBox();
             this.label5 = new System.Windows.Forms.Label();
+            this.textBox3 = new System.Windows.Forms.TextBox();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDown1)).BeginInit();
             this.SuspendLayout();
             // 
             // numericUpDown1
             // 
             this.numericUpDown1.Location = new System.Drawing.Point(33, 49);
-            this.numericUpDown1.Margin = new System.Windows.Forms.Padding(1, 1, 1, 1);
+            this.numericUpDown1.Margin = new System.Windows.Forms.Padding(1);
             this.numericUpDown1.Minimum = new decimal(new int[] {
             1,
             0,
@@ -142,13 +142,6 @@
             this.label4.Text = "Количество перемещений";
             this.label4.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
-            // textBox3
-            // 
-            this.textBox3.Location = new System.Drawing.Point(33, 118);
-            this.textBox3.Name = "textBox3";
-            this.textBox3.Size = new System.Drawing.Size(343, 23);
-            this.textBox3.TabIndex = 12;
-            // 
             // label5
             // 
             this.label5.AutoSize = true;
@@ -160,6 +153,13 @@
             this.label5.Text = "Укажите количество фишек на каждом столе через запятую ";
             this.label5.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
+            // textBox3
+            // 
+            this.textBox3.Location = new System.Drawing.Point(33, 118);
+            this.textBox3.Name = "textBox3";
+            this.textBox3.Size = new System.Drawing.Size(343, 23);
+            this.textBox3.TabIndex = 14;
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
@@ -167,8 +167,8 @@
             this.BackColor = System.Drawing.Color.SpringGreen;
             this.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("$this.BackgroundImage")));
             this.ClientSize = new System.Drawing.Size(617, 451);
-            this.Controls.Add(this.label5);
             this.Controls.Add(this.textBox3);
+            this.Controls.Add(this.label5);
             this.Controls.Add(this.label4);
             this.Controls.Add(this.label3);
             this.Controls.Add(this.label2);
@@ -199,7 +199,7 @@
         private Label label2;
         private Label label3;
         private Label label4;
-        private TextBox textBox3;
         private Label label5;
+        private TextBox textBox3;
     }
 }
